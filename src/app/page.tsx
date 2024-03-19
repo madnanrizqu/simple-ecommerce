@@ -6,7 +6,10 @@ export default function Home() {
     <>
       <h1>Hello Base</h1>
       <Button>From Radix Themes</Button>
-      <Input rightIcon={<SearchIcon />}></Input>
+      <Input
+        rightIcon={<SearchIcon />}
+        style={{ background: "#F9F9F9" }}
+      ></Input>
     </>
   );
 }
