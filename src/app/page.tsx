@@ -1,6 +1,15 @@
+"use client";
 import { Button, Flex, Image, Input, Box } from "@/ui_kit";
 import { SearchIcon } from "@/ui_kit/icons";
-import { Container, Text } from "@radix-ui/themes";
+import { Container } from "@radix-ui/themes";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+import classes from "./page.module.css";
 
 export default function Home() {
   return (
@@ -36,22 +45,36 @@ export default function Home() {
       </header>
       <main>
         <Container size="3" py="4">
-          <Text>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo,
-            aspernatur! Atque nobis facere distinctio recusandae pariatur.
-            Itaque porro harum id, labore totam numquam provident amet, fugit,
-            neque soluta officiis reprehenderit! Reiciendis suscipit non ex
-            iusto ut? Accusamus, consectetur eaque. Quam natus libero provident
-            facilis accusamus vero labore nesciunt in voluptates, deleniti,
-            adipisci sapiente tenetur porro eaque recusandae iure iusto placeat?
-            Possimus labore vel unde saepe dignissimos, magnam ex aspernatur ab
-            dolores aperiam nostrum voluptatum beatae odit totam cumque odio
-            maxime? Laudantium, vero itaque ex alias natus fugiat excepturi
-            reiciendis blanditiis? Natus error odit deserunt? Voluptatum, fugiat
-            repellat suscipit, quia laboriosam facilis non eum nemo
-            reprehenderit, explicabo dolor sed consectetur excepturi quae eaque.
-            Non ab harum natus esse aspernatur. Cum, debitis!
-          </Text>
+          <Swiper
+            className={classes.heroSlider}
+            modules={[Navigation, Pagination]}
+            spaceBetween={50}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+          >
+            <SwiperSlide>
+              <Box>
+                <Image
+                  src="https://picsum.photos/seed/4/1000/330"
+                  alt="Slide 1"
+                  height={330}
+                  width={1000}
+                />
+              </Box>
+            </SwiperSlide>
+            <SwiperSlide>
+              <Box>
+                <Image
+                  src="https://picsum.photos/seed/7/1000/330"
+                  alt="Slide 1"
+                  height={330}
+                  width={1000}
+                />
+              </Box>
+            </SwiperSlide>
+          </Swiper>
         </Container>
       </main>
     </>

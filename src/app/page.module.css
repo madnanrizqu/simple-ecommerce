@@ -1,0 +1,12 @@
+.heroSlider :global(.swiper-button-next),
+.heroSlider :global(.swiper-button-prev) {
+  --swiper-navigation-size: 32px;
+  --swiper-navigation-color: #1f1c17;
+  background-color: white;
+  padding: 6px;
+  border: 4px;
+}
+
+.heroSlider :global(.swiper-pagination-bullet-active) {
+  background: white;
+}
