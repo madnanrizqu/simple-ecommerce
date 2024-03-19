@@ -1,5 +1,7 @@
 import { Theme as _Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
+import "./reset.css";
+import "./theme-config.css";
 
 export type ThemeProps = {
   children: React.ReactNode;

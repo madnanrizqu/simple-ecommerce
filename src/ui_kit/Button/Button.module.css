@@ -1,0 +1,12 @@
+.common {
+  font-size: 14px;
+}
+
+.solid {
+  background: #41a0e4;
+}
+
+.outline {
+  border: #41a0e4;
+  color: #41a0e4;
+}
