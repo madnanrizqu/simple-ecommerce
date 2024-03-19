@@ -1,5 +1,6 @@
 import { Button, Flex, Image, Input, Box } from "@/ui_kit";
 import { SearchIcon } from "@/ui_kit/icons";
+import { Container, Text } from "@radix-ui/themes";
 
 export default function Home() {
   return (
@@ -33,6 +34,26 @@ export default function Home() {
           </Flex>
         </Flex>
       </header>
+      <main>
+        <Container size="3" py="4">
+          <Text>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo,
+            aspernatur! Atque nobis facere distinctio recusandae pariatur.
+            Itaque porro harum id, labore totam numquam provident amet, fugit,
+            neque soluta officiis reprehenderit! Reiciendis suscipit non ex
+            iusto ut? Accusamus, consectetur eaque. Quam natus libero provident
+            facilis accusamus vero labore nesciunt in voluptates, deleniti,
+            adipisci sapiente tenetur porro eaque recusandae iure iusto placeat?
+            Possimus labore vel unde saepe dignissimos, magnam ex aspernatur ab
+            dolores aperiam nostrum voluptatum beatae odit totam cumque odio
+            maxime? Laudantium, vero itaque ex alias natus fugiat excepturi
+            reiciendis blanditiis? Natus error odit deserunt? Voluptatum, fugiat
+            repellat suscipit, quia laboriosam facilis non eum nemo
+            reprehenderit, explicabo dolor sed consectetur excepturi quae eaque.
+            Non ab harum natus esse aspernatur. Cum, debitis!
+          </Text>
+        </Container>
+      </main>
     </>
   );
 }
