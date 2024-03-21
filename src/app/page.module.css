@@ -10,3 +10,23 @@
 .heroSlider :global(.swiper-pagination-bullet-active) {
   background: white;
 }
+
+.footer_nav_list > li:not(:first-child) {
+  margin-top: 6px;
+}
+
+.footer_nav_list > li {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.product_name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.product_price {
+  font-weight: 700;
+  color: #41a0e4;
+  font-size: 14px;
+}

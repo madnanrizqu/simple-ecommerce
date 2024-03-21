@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import clsx from "clsx";
 
 import { Theme, ThemePanel } from "@/ui_kit";
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-roboto",
-});
+import { playfairDisplay, poppins } from "@/styles/font";
+import "@/styles/reset.css";
+import "@/styles/global.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={clsx(playfairDisplay.variable, poppins.variable)}>
         <Theme>
           {children}
           {process.env.NEXT_PUBLIC_SHOW_THEME_PANEL && <ThemePanel />}
