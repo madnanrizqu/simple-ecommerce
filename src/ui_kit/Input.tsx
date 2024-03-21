@@ -8,11 +8,13 @@ export type InputProps = {
   rightIcon?: ReactNode;
   onChange?: (v: string) => void;
   style?: React.CSSProperties;
+  className?: string;
 };
 export const Input = (props: InputProps) => {
   return (
     <TextFieldRoot>
       <TextFieldInput
+        className={props.className}
         style={props.style}
         placeholder={props.placeholder}
         onChange={(e) => props.onChange?.(e.target.value)}

@@ -1,0 +1,27 @@
+.root {
+  min-height: 100vh;
+}
+
+.root > div {
+  flex-basis: 50vw;
+}
+
+.root > div:first-child {
+  background-image: url("/images/login_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: left;
+  background-position-y: bottom;
+}
+.section {
+  padding: 96px;
+}
+
+.label {
+  font-size: 12px;
+  color: #757575;
+}
+
+.input {
+  font-size: 12px;
+}
