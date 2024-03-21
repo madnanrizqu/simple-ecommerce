@@ -1,0 +1,41 @@
+.root {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.navbar {
+  padding: 24px 52px;
+  border-bottom: 3px solid #f8f8f8;
+}
+
+.mainContainer {
+  overflow-y: hidden;
+}
+
+.main {
+  background: #f8f8f8;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.logoutButton {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  color: #d83a56;
+}
+
+.logoutButton:hover {
+  background-color: initial;
+}
+
+.sidebarItem {
+  padding: 10px 32px 10px 18px;
+}
+
+.sidebarItemActive {
+  background: #41a0e4;
+  color: white;
+  font-weight: 500;
+}
