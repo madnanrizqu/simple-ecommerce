@@ -1,0 +1,40 @@
+.root {
+  padding: 32px;
+}
+
+.headline {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.cards {
+  margin-top: 28px;
+}
+
+.newProduct {
+  margin-top: 28px;
+  background: white;
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+
+.newProductTitle {
+  font-weight: 700;
+}
+
+.tableHeaderRow {
+  background-color: #41a0e4;
+  color: white !important;
+}
+
+.tableHeaderRow > * {
+  font-weight: 400;
+}
+
+.tableHeaderRow > *:first-child {
+  border-radius: 6px 0px 0px 6px;
+}
+
+.tableHeaderRow > *:last-child {
+  border-radius: 0px 6px 6px 0px;
+}
