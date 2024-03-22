@@ -1,0 +1,18 @@
+.common {
+  border-radius: 12px;
+  padding: 4px 8px;
+  color: white;
+  text-transform: uppercase;
+  display: inline-block;
+  width: 70px;
+  text-align: center;
+  font-size: 9px;
+}
+
+.chipActive {
+  background-color: #479f77;
+}
+
+.chipInActive {
+  background-color: #d83a56;
+}
