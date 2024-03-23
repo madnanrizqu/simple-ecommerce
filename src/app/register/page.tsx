@@ -1,12 +1,16 @@
+"use client";
+
 import { Button, Input } from "@/ui_kit";
 import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import React from "react";
 
+import classes from "./register.module.css";
 import { useForm, Controller } from "react-hook-form";
-import classes from "./login.module.css";
+import { User } from "@/type/user";
 
-const Login = () => {
-  const { control } = useForm<{ email: string; password: string }>();
+const Register = () => {
+  const { control } =
+    useForm<Pick<User, "email" | "name" | "password" | "contactNumber">>();
 
   return (
     <Flex className={classes.root}>
@@ -24,7 +28,7 @@ const Login = () => {
       <Flex grow="1" justify="center" align="center">
         <Box className={classes.section}>
           <header>
-            <Heading as="h2">Selamat Datang</Heading>
+            <Heading as="h2">Registrasi Kustomer</Heading>
             <Text
               style={{
                 fontSize: 12,
@@ -33,41 +37,68 @@ const Login = () => {
                 display: "block",
               }}
             >
-              Silahkan masukkan email dan password Anda untuk mulai menggunakan
-              aplikasi
+              Silahkan mendaftar dengan memasukkan informasi yang tertera
             </Text>
 
             <Flex direction="column" gap="3" style={{ marginTop: 24 }}>
               <Flex direction="column" gap="1">
+                <label className={classes.label}>Nama</label>
+                <Controller
+                  control={control}
+                  name="name"
+                  rules={{ required: true }}
+                  render={() => (
+                    <Input
+                      className={classes.input}
+                      placeholder="Masukkan nama lengkap"
+                    ></Input>
+                  )}
+                ></Controller>
+              </Flex>
+              <Flex direction="column" gap="1">
                 <label className={classes.label}>Email</label>
                 <Controller
                   control={control}
+                  name="email"
                   rules={{
                     required: true,
                     pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                   }}
-                  name="email"
                   render={() => (
                     <Input
                       className={classes.input}
-                      placeholder="Contoh: admin@gmail.com"
+                      placeholder="Contoh: budi@gmail.com"
                     ></Input>
                   )}
-                />
+                ></Controller>
+              </Flex>
+              <Flex direction="column" gap="1">
+                <label className={classes.label}>No Kontak</label>
+                <Controller
+                  control={control}
+                  name="contactNumber"
+                  rules={{ required: true }}
+                  render={() => (
+                    <Input
+                      className={classes.input}
+                      placeholder="Contoh: 8512521325"
+                    ></Input>
+                  )}
+                ></Controller>
               </Flex>
               <Flex direction="column" gap="1">
                 <label className={classes.label}>Password</label>
                 <Controller
                   control={control}
-                  rules={{ required: true }}
                   name="password"
+                  rules={{ required: true, minLength: 6 }}
                   render={() => (
                     <Input
                       className={classes.input}
-                      placeholder="Masukkan password"
+                      placeholder="Masukkan password. Minimal 6 karakter"
                     ></Input>
                   )}
-                />
+                ></Controller>
               </Flex>
             </Flex>
             <Button style={{ width: "100%", marginTop: 24 }}>Masuk</Button>
@@ -78,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

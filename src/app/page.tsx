@@ -15,6 +15,7 @@ import { playfairDisplay, sfProRegular } from "@/styles/font";
 import { useEffect, useState } from "react";
 import { getProducts } from "@/api/products";
 import { Product } from "@/type/product";
+import Link from "next/link";
 
 // const products: Array<Product> = [
 //   {
@@ -109,8 +110,12 @@ export default function Home() {
             ></Input>
           </Box>
           <Flex gap="2">
-            <Button variant="outline">MASUK</Button>
-            <Button>DAFTAR</Button>
+            <Link href="/login">
+              <Button variant="outline">MASUK</Button>
+            </Link>
+            <Link href="/register">
+              <Button>DAFTAR</Button>
+            </Link>
           </Flex>
         </Flex>
       </header>
