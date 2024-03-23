@@ -15,6 +15,7 @@ import React from "react";
 
 import classes from "./page.module.css";
 import DashboardCard from "./components/DashboardCard";
+import { Pagination } from "./components/Pagination";
 
 const Dashboard = () => {
   return (
@@ -65,6 +66,11 @@ const Dashboard = () => {
           </TableBody>
         </TableRoot>
       </Flex>
+
+      <Pagination
+        page={1}
+        style={{ marginTop: "16px", justifyContent: "end" }}
+      />
     </Box>
   );
 };
