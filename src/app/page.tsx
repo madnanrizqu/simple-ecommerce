@@ -12,70 +12,77 @@ import "swiper/css/pagination";
 import classes from "./page.module.css";
 import clsx from "clsx";
 import { playfairDisplay, sfProRegular } from "@/styles/font";
+import { useEffect, useState } from "react";
+import { getProducts } from "@/api/products";
+import { Product } from "@/type/product";
 
-type Product = {
-  imageSrc: string;
-  name: string;
-  price: string;
-  currency: string;
-};
-const products: Array<Product> = [
-  {
-    imageSrc: "/images/product_1.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-  {
-    imageSrc: "/images/product_2.png",
-    name: "Euodia",
-    price: "x.xxx.980",
-    currency: "IDR",
-  },
-];
+// const products: Array<Product> = [
+//   {
+//     imageSrc: "/images/product_1.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+//   {
+//     imageSrc: "/images/product_2.png",
+//     name: "Euodia",
+//     price: "x.xxx.980",
+//     currency: "IDR",
+//   },
+// ];
 export default function Home() {
+  const [products, setProducts] = useState<Array<Product>>([]);
+
+  useEffect(() => {
+    try {
+      getProducts().then((data) => {
+        setProducts(data ?? []);
+      });
+    } catch (error) {}
+  }, []);
+
   return (
     <>
       <header>
@@ -157,7 +164,11 @@ export default function Home() {
                 <Box>
                   <Box>
                     <Image
-                      src={p.imageSrc}
+                      src={
+                        index === 0
+                          ? "/images/product_1.png"
+                          : "/images/product_2.png"
+                      }
                       alt={`Product ${index + 1}`}
                       height={183}
                       width={183}
@@ -202,7 +213,11 @@ export default function Home() {
                 <Box>
                   <Box>
                     <Image
-                      src={p.imageSrc}
+                      src={
+                        index === 0
+                          ? "/images/product_1.png"
+                          : "/images/product_2.png"
+                      }
                       alt={`Product ${index + 1}`}
                       height={183}
                       width={183}
