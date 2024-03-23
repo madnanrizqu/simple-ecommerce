@@ -12,3 +12,18 @@ export const verifyEmail = async (verificationCode: string) => {
     .get<ApiResponse<any>>(`/auth/verify_email/${verificationCode}`)
     .then((res) => res.data);
 };
+
+export const login = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  return await fetcher
+    .post<ApiResponse<{ access_token: string }>>("/auth/login", {
+      email,
+      password,
+    })
+    .then((res) => res.data.data);
+};

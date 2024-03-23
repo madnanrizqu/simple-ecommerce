@@ -13,7 +13,10 @@ export const PageLoader = (props: PageLoaderProps) => {
   }
 
   return (
-    <Box className={classes.root}>
+    <Box
+      className={classes.root}
+      style={{ height: props.children ? undefined : "100vh" }}
+    >
       <Bars
         wrapperClass={classes.loader}
         height="80"
