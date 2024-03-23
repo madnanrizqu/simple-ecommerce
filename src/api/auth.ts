@@ -6,3 +6,9 @@ export const registerUser = async (data: User) => {
     .post<{ data: { devEmailLink: string } }>("/auth/register", data)
     .then((res) => res.data.data.devEmailLink);
 };
+
+export const verifyEmail = async (verificationCode: string) => {
+  return await fetcher
+    .get<ApiResponse<any>>(`/auth/verify_email/${verificationCode}`)
+    .then((res) => res.data);
+};

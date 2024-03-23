@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Input } from "@/ui_kit";
 import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import React from "react";

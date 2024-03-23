@@ -144,7 +144,6 @@ const Register = () => {
                       role: "CUSTOMER",
                     });
 
-                    console.log(res);
                     setLoading(false);
                     setVerifyEmailLink(res);
                     setDialog("verifyEmail");

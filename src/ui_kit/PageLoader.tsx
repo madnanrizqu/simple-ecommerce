@@ -4,7 +4,7 @@ import { Bars } from "react-loader-spinner";
 import classes from "./PageLoader.module.css";
 
 export type PageLoaderProps = {
-  children: ReactNode;
+  children?: ReactNode;
   isLoading: boolean;
 };
 export const PageLoader = (props: PageLoaderProps) => {
