@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Box,
   Button,
@@ -15,12 +17,16 @@ import PowerIcon from "@/ui_kit/icons/PowerIcon";
 
 import classes from "./layout.module.css";
 import clsx from "clsx";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
     <Flex className={classes.root} direction="column">
       <footer className={classes.navbar}>
@@ -78,37 +84,48 @@ export default function DashboardLayout({
           <nav>
             <ul>
               <li>
-                <Flex
-                  align="center"
-                  gap="2"
-                  className={clsx(
-                    classes.sidebarItem,
-                    classes.sidebarItemActive
-                  )}
-                >
-                  <HomeIcon />
-                  <Text size="2">Dashboard</Text>
-                </Flex>
+                <Link href="/dashboard">
+                  <Flex
+                    align="center"
+                    gap="2"
+                    className={clsx(classes.sidebarItem, {
+                      [classes.sidebarItemActive]: pathname === "/dashboard",
+                    })}
+                  >
+                    <HomeIcon />
+                    <Text size="2">Dashboard</Text>
+                  </Flex>
+                </Link>
               </li>
               <li>
-                <Flex
-                  align="center"
-                  gap="2"
-                  className={clsx(classes.sidebarItem)}
-                >
-                  <UserIcon />
-                  <Text size="2">Manajemen User</Text>
-                </Flex>
+                <Link href="/dashboard/users">
+                  <Flex
+                    align="center"
+                    gap="2"
+                    className={clsx(classes.sidebarItem, {
+                      [classes.sidebarItemActive]:
+                        pathname === "/dashboard/users",
+                    })}
+                  >
+                    <UserIcon />
+                    <Text size="2">Manajemen User</Text>
+                  </Flex>
+                </Link>
               </li>
               <li>
-                <Flex
-                  align="center"
-                  gap="2"
-                  className={clsx(classes.sidebarItem)}
-                >
-                  <ProductIcon />
-                  <Text size="2">Manajemen Pesanan</Text>
-                </Flex>
+                <Link href="/dashboard/products">
+                  <Flex
+                    align="center"
+                    gap="2"
+                    className={clsx(classes.sidebarItem, {
+                      [classes.sidebarItemActive]:
+                        pathname === "/dashboard/products",
+                    })}
+                  >
+                    <ProductIcon />
+                    <Text size="2">Manajemen Pesanan</Text>
+                  </Flex>
+                </Link>
               </li>
             </ul>
           </nav>
