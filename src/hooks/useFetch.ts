@@ -13,18 +13,22 @@ export const useFetch = <T>(
 
   const _fetcher = useCallback(fetcher, deps ?? []);
 
+  const callApi = async () => {
+    try {
+      setStatus("loading");
+      const res = await _fetcher();
+      setData(res);
+      setStatus("success");
+    } catch (err) {
+      setStatus("error");
+      setError(error);
+    }
+  };
+
   useEffect(() => {
     (async () => {
-      try {
-        setStatus("loading");
-        const res = await _fetcher();
-        setData(res);
-        setStatus("success");
-      } catch (err) {
-        setStatus("error");
-        setError(error);
-      }
+      await callApi();
     })();
   }, [_fetcher, error]);
-  return { status, data, error };
+  return { status, data, error, refetch: () => callApi() };
 };

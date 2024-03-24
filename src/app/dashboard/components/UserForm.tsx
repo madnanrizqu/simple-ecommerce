@@ -17,6 +17,7 @@ export const UserForm = (props: UserForm) => {
       name: props.initialData?.name ?? "",
       email: props.initialData?.email ?? "",
       contactNumber: props.initialData?.contactNumber ?? "",
+      role: props.initialData?.role ?? undefined,
     },
   });
 
@@ -59,21 +60,23 @@ export const UserForm = (props: UserForm) => {
           ></Controller>
         </Flex>
 
-        <Flex direction="column" gap="2">
-          <label className={classes.label}>Password</label>
-          <Controller
-            name="password"
-            control={control}
-            rules={{ required: true, minLength: 6 }}
-            render={({ field }) => (
-              <Input
-                className={classes.input}
-                placeholder="Masukkan password"
-                {...field}
-              ></Input>
-            )}
-          ></Controller>
-        </Flex>
+        {!props.initialData && (
+          <Flex direction="column" gap="2">
+            <label className={classes.label}>Password</label>
+            <Controller
+              name="password"
+              control={control}
+              rules={{ required: true, minLength: 6 }}
+              render={({ field }) => (
+                <Input
+                  className={classes.input}
+                  placeholder="Masukkan password"
+                  {...field}
+                ></Input>
+              )}
+            ></Controller>
+          </Flex>
+        )}
 
         <Flex direction="column" gap="2">
           <label className={classes.label}>Role</label>

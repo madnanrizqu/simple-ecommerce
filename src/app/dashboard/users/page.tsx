@@ -26,12 +26,13 @@ import DashboardChip from "../components/DashboardChip";
 import { Pagination } from "../components/Pagination";
 import { UserForm } from "../components/UserForm";
 import { useFetch } from "@/hooks/useFetch";
-import { createUser, getUsers } from "@/api/user";
+import { createUser, getUsers, updateUser } from "@/api/user";
 import { pagination } from "@/utils/pagination";
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
 import { PageLoader } from "@/ui_kit/PageLoader";
+import { User, UserAsResponse } from "@/type/user";
 
 const userData = [
   {
@@ -194,11 +195,26 @@ const Users = () => {
             </DialogTitle>
 
             <UserForm
-              initialData={
-                dialog === "update" && selectedUserId
-                  ? userData.find((v) => v.id === selectedUserId)
-                  : undefined
-              }
+              initialData={(function () {
+                if (
+                  dialog === "update" &&
+                  selectedUserId &&
+                  tableQuery.data?.users
+                ) {
+                  const user = tableQuery.data.users.find(
+                    (v) => v.id === selectedUserId
+                  ) as UserAsResponse;
+
+                  return {
+                    name: user.name,
+                    email: user.email,
+                    contactNumber: user.contact_number,
+                    role: user.role,
+                  };
+                } else {
+                  return undefined;
+                }
+              })()}
               onSubmit={async (v) => {
                 if (dialog === "create") {
                   try {
@@ -211,6 +227,29 @@ const Users = () => {
                     setLoading("none");
                     setDialog("none");
                     toast(`Berhasil membuat user ${user?.name ?? ""}`);
+                  } catch (error) {
+                    setLoading("none");
+                    if (isAxiosError(error)) {
+                      toast(
+                        `Terjadi kesalahan: ${
+                          error.response?.data?.message ?? ""
+                        }`
+                      );
+                    } else {
+                      toast("Terjadi kesalahan");
+                    }
+                  }
+                } else if (dialog === "update") {
+                  try {
+                    setLoading("update");
+                    console.log(v);
+
+                    const user = await updateUser(selectedUserId as number, v);
+
+                    setLoading("none");
+                    setDialog("none");
+                    toast(`Berhasil mengubah user ${user?.name ?? ""}`);
+                    await tableQuery.refetch();
                   } catch (error) {
                     setLoading("none");
                     if (isAxiosError(error)) {

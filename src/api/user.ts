@@ -34,3 +34,9 @@ export const createUser = async (data: User) => {
     .post<ApiResponse<UserAsResponse>>("/users", data)
     .then((res) => res.data.data);
 };
+
+export const updateUser = async (userId: number, data: Partial<User>) => {
+  return await fetcher
+    .put<ApiResponse<UserAsResponse>>(`/users/${userId}`, data)
+    .then((res) => res.data.data);
+};
