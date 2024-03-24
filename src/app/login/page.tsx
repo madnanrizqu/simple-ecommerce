@@ -20,8 +20,8 @@ const Login = () => {
     password: string;
   }>({
     defaultValues: {
-      email: "madnanrizqullah@gmail.com",
-      password: "rahasia",
+      email: "",
+      password: "",
     },
   });
 
@@ -107,8 +107,6 @@ const Login = () => {
                     setLoading("none");
 
                     const data = await getCurrentUser();
-
-                    console.log(data?.user);
 
                     authStore.setUser(data?.user as LoggedInUser);
                     authStore.setToken(res?.access_token as string);
