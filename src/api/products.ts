@@ -35,3 +35,9 @@ export const updateProduct = async (
     .put<ApiResponse<ProductAsResponse>>(`/products/${productId}`, data)
     .then((res) => res.data.data);
 };
+
+export const deleteProduct = async (productId: number) => {
+  return await fetcher.delete<ApiResponse<ProductAsResponse>>(
+    `/products/${productId}`
+  );
+};

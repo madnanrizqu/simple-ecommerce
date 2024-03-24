@@ -31,6 +31,7 @@ import { Pagination } from "../components/Pagination";
 import { useFetch } from "@/hooks/useFetch";
 import {
   createProduct,
+  deleteProduct,
   getProducts,
   getTotalProducts,
   updateProduct,
@@ -310,7 +311,11 @@ const Users = () => {
               <Text
                 style={{ color: "#A4A4A4" }}
               >{`Apakah kamu yakin menghapus ${
-                productData.find((v) => v.id === selectedProductId)?.name
+                (tableQuery.data?.products &&
+                  tableQuery.data.products.find(
+                    (v) => v.id === selectedProductId
+                  )?.name) ??
+                "produk"
               }?`}</Text>
             </Flex>
             <Inset side="x" mt="2">
@@ -327,7 +332,30 @@ const Users = () => {
                 <Button variant="outline" onClick={() => setDialog("none")}>
                   Batal
                 </Button>
-                <Button>Hapus</Button>
+                <Button
+                  onClick={async () => {
+                    try {
+                      setLoading("delete");
+                      await deleteProduct(selectedProductId as number);
+
+                      setDialog("none");
+                      setLoading("none");
+
+                      toast(
+                        `Berhasil menghapus produk dengan id: ${selectedProductId}`
+                      );
+
+                      tableQuery.refetch();
+                    } catch (error) {
+                      setDialog("none");
+                      setLoading("none");
+
+                      toast("Terjadi kesalahan");
+                    }
+                  }}
+                >
+                  Hapus
+                </Button>
               </Flex>
             </Inset>
           </DialogContent>
