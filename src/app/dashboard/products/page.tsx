@@ -152,19 +152,21 @@ const Users = () => {
                         >
                           <Pencil1Icon />
                         </IconButton>
-                        <IconButton
-                          variant="solid"
-                          size="1"
-                          radius="full"
-                          color="red"
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            setDialog("delete");
-                            setSelectedProductId(v.id);
-                          }}
-                        >
-                          <TrashIcon />
-                        </IconButton>
+                        {!v.deleted && (
+                          <IconButton
+                            variant="solid"
+                            size="1"
+                            radius="full"
+                            color="red"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              setDialog("delete");
+                              setSelectedProductId(v.id);
+                            }}
+                          >
+                            <TrashIcon />
+                          </IconButton>
+                        )}
                       </Flex>
                     </TableCell>
                   </TableRow>
