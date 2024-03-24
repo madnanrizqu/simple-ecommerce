@@ -25,6 +25,10 @@ import classes from "./page.module.css";
 import DashboardChip from "../components/DashboardChip";
 import { Pagination } from "../components/Pagination";
 import { UserForm } from "../components/UserForm";
+import { useFetch } from "@/hooks/useFetch";
+import { getUsers } from "@/api/user";
+import { pagination } from "@/utils/pagination";
+import Skeleton from "react-loading-skeleton";
 
 const userData = [
   {
@@ -66,6 +70,16 @@ const Users = () => {
     "none"
   );
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+
+  const [page, setPage] = useState(1);
+  const take = 5;
+  const tableQuery = useFetch(
+    () => getUsers({ take, skip: pagination.calcSkip({ take, page }) }),
+    [page]
+  );
+
+  console.log(tableQuery);
+
   return (
     <Box className={classes.root}>
       <Flex justify="between" align="center">
@@ -78,64 +92,77 @@ const Users = () => {
         </Button>
       </Flex>
 
-      <TableRoot className={classes.table}>
-        <TableHeader>
-          <TableRow>
-            <TableColumnHeaderCell>No</TableColumnHeaderCell>
-            <TableColumnHeaderCell>Nama Lengkap</TableColumnHeaderCell>
-            <TableColumnHeaderCell>Email</TableColumnHeaderCell>
-            <TableColumnHeaderCell>No Telepon</TableColumnHeaderCell>
-            <TableColumnHeaderCell>Status</TableColumnHeaderCell>
-            <TableColumnHeaderCell></TableColumnHeaderCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {userData.map((v) => (
-            <TableRow key={v.number}>
-              <TableCell>{v.number}</TableCell>
-              <TableCell>{v.name}</TableCell>
-              <TableCell>{v.email}</TableCell>
-              <TableCell>{v.contactNumber}</TableCell>
-              <TableCell>
-                <DashboardChip variant={v.deleted ? "inActive" : "active"} />
-              </TableCell>
-              <TableCell>
-                <Flex gap="3">
-                  <IconButton
-                    variant="solid"
-                    size="1"
-                    radius="full"
-                    style={{ background: "#EC9024", cursor: "pointer" }}
-                    onClick={() => {
-                      setDialog("update");
-                      setSelectedUserId(v.id);
-                    }}
-                  >
-                    <Pencil1Icon />
-                  </IconButton>
-                  <IconButton
-                    variant="solid"
-                    size="1"
-                    radius="full"
-                    color="red"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setDialog("delete");
-                      setSelectedUserId(v.id);
-                    }}
-                  >
-                    <TrashIcon />
-                  </IconButton>
-                </Flex>
-              </TableCell>
+      {tableQuery.status === "success" ? (
+        <TableRoot className={classes.table}>
+          <TableHeader>
+            <TableRow>
+              <TableColumnHeaderCell>No</TableColumnHeaderCell>
+              <TableColumnHeaderCell>Nama Lengkap</TableColumnHeaderCell>
+              <TableColumnHeaderCell>Email</TableColumnHeaderCell>
+              <TableColumnHeaderCell>No Telepon</TableColumnHeaderCell>
+              <TableColumnHeaderCell>Status</TableColumnHeaderCell>
+              <TableColumnHeaderCell></TableColumnHeaderCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </TableRoot>
+          </TableHeader>
+          <TableBody>
+            {tableQuery.data?.users &&
+              tableQuery.data.users.map((v, index) => (
+                <TableRow key={v.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{v.name}</TableCell>
+                  <TableCell>{v.email}</TableCell>
+                  <TableCell>{v.contact_number}</TableCell>
+                  <TableCell>
+                    <DashboardChip
+                      variant={v.deleted ? "inActive" : "active"}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Flex gap="3">
+                      <IconButton
+                        variant="solid"
+                        size="1"
+                        radius="full"
+                        style={{ background: "#EC9024", cursor: "pointer" }}
+                        onClick={() => {
+                          setDialog("update");
+                          setSelectedUserId(v.id);
+                        }}
+                      >
+                        <Pencil1Icon />
+                      </IconButton>
+                      <IconButton
+                        variant="solid"
+                        size="1"
+                        radius="full"
+                        color="red"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setDialog("delete");
+                          setSelectedUserId(v.id);
+                        }}
+                      >
+                        <TrashIcon />
+                      </IconButton>
+                    </Flex>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </TableRoot>
+      ) : (
+        <Skeleton count={15} />
+      )}
 
       <Pagination
-        page={1}
+        maxPage={pagination.calcMaxPage({
+          total: tableQuery.data?.total,
+          take,
+        })}
+        page={page}
         style={{ marginTop: "16px", justifyContent: "end" }}
+        onClickNext={(newPage) => setPage(newPage)}
+        onClickPrev={(newPage) => setPage(newPage)}
       />
 
       <DialogRoot open={dialog === "create" || dialog === "update"}>

@@ -9,11 +9,21 @@ export interface User {
   role: UserType;
 }
 
+export interface UserAsResponse {
+  id: number;
+  name: string;
+  email: string;
+  contact_number: string;
+  contact_number_extension: string;
+  role: UserType;
+  deleted: boolean;
+}
+
 export interface LoggedInUser {
   id: number;
   name: string;
   email: string;
   contact_number: string;
   contact_number_extension: string;
-  role: string;
+  role: UserType;
 }

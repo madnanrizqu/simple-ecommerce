@@ -1,11 +1,6 @@
 import { fetcher } from "@/lib/fetcher";
 import { Product } from "@/type/product";
 
-type Pagination = {
-  skip?: number;
-  take?: number;
-};
-
 export const getProducts = async (args?: Pagination) => {
   const searchParams = args
     ? new URLSearchParams(args as Record<string, string>)

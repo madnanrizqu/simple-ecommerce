@@ -1,5 +1,5 @@
 import { fetcher } from "@/lib/fetcher";
-import { LoggedInUser } from "@/type/user";
+import { LoggedInUser, User, UserAsResponse } from "@/type/user";
 
 export const getCurrentUser = async () => {
   return await fetcher
@@ -13,6 +13,18 @@ export const getTotalUsers = async () => {
   return await fetcher
     .get<ApiResponse<{ deleted: number; notDeleted: number; total: number }>>(
       "/users/total"
+    )
+    .then((res) => res.data.data);
+};
+
+export const getUsers = async (args?: Pagination) => {
+  const searchParams = args
+    ? new URLSearchParams(args as Record<string, string>)
+    : "";
+
+  return await fetcher
+    .get<ApiResponse<{ users: Array<UserAsResponse>; total: number }>>(
+      `/users?${searchParams}`
     )
     .then((res) => res.data.data);
 };
