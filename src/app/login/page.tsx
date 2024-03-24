@@ -10,6 +10,9 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { login } from "@/api/auth";
 import { PageLoader } from "@/ui_kit/PageLoader";
+import { useAuthStore } from "@/store/auth";
+import { getCurrentUser } from "@/api/user";
+import { LoggedInUser } from "@/type/user";
 
 const Login = () => {
   const { control, handleSubmit } = useForm<{
@@ -25,6 +28,8 @@ const Login = () => {
   const [loading, setLoading] = useState<"loading" | "none">("none");
 
   const router = useRouter();
+
+  const authStore = useAuthStore();
 
   return (
     <PageLoader isLoading={loading !== "none"}>
@@ -100,7 +105,14 @@ const Login = () => {
                       password: formValues.password,
                     });
                     setLoading("none");
-                    console.log(res);
+
+                    const data = await getCurrentUser();
+
+                    console.log(data?.user);
+
+                    authStore.setUser(data?.user as LoggedInUser);
+                    authStore.setToken(res?.access_token as string);
+
                     toast("Berhasil login, mengarahkan ke dashboard...", {
                       autoClose: 2500,
                       onClose: () => {

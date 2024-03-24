@@ -20,7 +20,8 @@
     "react-hook-form": "^7.51.1",
     "react-loader-spinner": "^6.1.6",
     "react-toastify": "^10.0.5",
-    "swiper": "^11.0.7"
+    "swiper": "^11.0.7",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

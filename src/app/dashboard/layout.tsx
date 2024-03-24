@@ -19,6 +19,10 @@ import classes from "./layout.module.css";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { logout } from "@/api/auth";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -26,6 +30,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const authStore = useAuthStore();
 
   return (
     <Flex className={classes.root} direction="column">
@@ -35,9 +41,9 @@ export default function DashboardLayout({
           <Flex align="center" gap="4">
             <Flex direction="column" align="end">
               <Text style={{ color: "#41A0E4", fontSize: "10px" }}>
-                Hallo Admin,
+                {`Halo ${authStore.user?.role}`}
               </Text>
-              <Text size="2">Aden S. Putra</Text>
+              <Text size="2">{authStore.user?.name ?? "-"}</Text>
             </Flex>
             <PopoverRoot>
               <PopoverTrigger>
@@ -67,10 +73,24 @@ export default function DashboardLayout({
                         background: "#C4C4C4",
                       }}
                     ></Box>
-                    <Text size="2">Aden S. Putra</Text>
-                    <Text style={{ fontSize: 10 }}>Aden@gmail.com</Text>
+                    <Text size="2">{authStore.user?.name ?? "-"}</Text>
+                    <Text style={{ fontSize: 10 }}>
+                      {authStore.user?.email ?? "-"}
+                    </Text>
                   </Flex>
-                  <Button variant="outline" className={classes.logoutButton}>
+                  <Button
+                    variant="outline"
+                    className={classes.logoutButton}
+                    onClick={async () => {
+                      try {
+                        await logout();
+                        toast("Berhasil!");
+                        router.push("/login");
+                      } catch (error) {
+                        toast("Terjadi kesalahan");
+                      }
+                    }}
+                  >
                     <PowerIcon /> Keluar
                   </Button>
                 </Flex>

@@ -27,3 +27,7 @@ export const login = async ({
     })
     .then((res) => res.data.data);
 };
+
+export const logout = async () => {
+  return await fetcher.post("/auth/logout");
+};
