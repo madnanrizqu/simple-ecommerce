@@ -6,6 +6,14 @@ This is a simple ecommerce site that has products and users
 
 This fullfills all frontend requirement except OAuth
 
+## Tech Used
+
+1. Next.js
+2. Typescript
+3. Radix UI
+4. Zustand
+5. Axios
+
 ## How to run locally?
 
 ### Prerequisites
