@@ -16,73 +16,11 @@ import { useEffect, useState } from "react";
 import { getProducts, getPublicProducts } from "@/api/products";
 import { Product } from "@/type/product";
 import Link from "next/link";
+import { useFetch } from "@/hooks/useFetch";
+import Skeleton from "react-loading-skeleton";
 
-// const products: Array<Product> = [
-//   {
-//     imageSrc: "/images/product_1.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-//   {
-//     imageSrc: "/images/product_2.png",
-//     name: "Euodia",
-//     price: "x.xxx.980",
-//     currency: "IDR",
-//   },
-// ];
 export default function Home() {
-  const [products, setProducts] = useState<Array<Product>>([]);
-
-  useEffect(() => {
-    try {
-      getPublicProducts().then((data) => {
-        setProducts(data?.products ?? []);
-      });
-    } catch (error) {}
-  }, []);
+  const productsQuery = useFetch(getPublicProducts);
 
   return (
     <>
@@ -157,48 +95,53 @@ export default function Home() {
           >
             Terbaru
           </Heading>
-          <Swiper
-            className={classes.heroSlider}
-            modules={[Navigation]}
-            spaceBetween={75}
-            slidesPerView={5}
-            navigation
-          >
-            {products.map((p, index) => (
-              <SwiperSlide key={`${index}-${p.name}`}>
-                <Box>
-                  <Box>
-                    <Image
-                      src={
-                        index === 0
-                          ? "/images/product_1.png"
-                          : "/images/product_2.png"
-                      }
-                      alt={`Product ${index + 1}`}
-                      height={183}
-                      width={183}
-                    />
-                  </Box>
-                  <Flex direction="column" align="start">
-                    <Text
-                      className={clsx(
-                        playfairDisplay.className,
-                        classes["product_name"]
-                      )}
-                    >
-                      {p.name}
-                    </Text>
-                    <Text
-                      className={clsx(
-                        sfProRegular.className,
-                        classes["product_price"]
-                      )}
-                    >{`${p.currency} ${p.price}`}</Text>
-                  </Flex>
-                </Box>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {productsQuery.status === "success" ? (
+            <Swiper
+              className={classes.heroSlider}
+              modules={[Navigation]}
+              spaceBetween={75}
+              slidesPerView={5}
+              navigation
+            >
+              {productsQuery.data?.products &&
+                productsQuery.data.products.map((p, index) => (
+                  <SwiperSlide key={`${index}-${p.name}`}>
+                    <Box>
+                      <Box>
+                        <Image
+                          src={
+                            index === 0
+                              ? "/images/product_1.png"
+                              : "/images/product_2.png"
+                          }
+                          alt={`Product ${index + 1}`}
+                          height={183}
+                          width={183}
+                        />
+                      </Box>
+                      <Flex direction="column" align="start">
+                        <Text
+                          className={clsx(
+                            playfairDisplay.className,
+                            classes["product_name"]
+                          )}
+                        >
+                          {p.name}
+                        </Text>
+                        <Text
+                          className={clsx(
+                            sfProRegular.className,
+                            classes["product_price"]
+                          )}
+                        >{`${p.currency} ${p.price}`}</Text>
+                      </Flex>
+                    </Box>
+                  </SwiperSlide>
+                ))}
+            </Swiper>
+          ) : (
+            <Skeleton count={10} />
+          )}
           <Heading
             className={playfairDisplay.className}
             style={{ marginTop: "48px" }}
@@ -206,48 +149,53 @@ export default function Home() {
           >
             Produk Tersedia
           </Heading>
-          <Swiper
-            className={classes.heroSlider}
-            modules={[Navigation]}
-            spaceBetween={75}
-            slidesPerView={5}
-            navigation
-          >
-            {products.map((p, index) => (
-              <SwiperSlide key={`${index}-${p.name}`}>
-                <Box>
-                  <Box>
-                    <Image
-                      src={
-                        index === 0
-                          ? "/images/product_1.png"
-                          : "/images/product_2.png"
-                      }
-                      alt={`Product ${index + 1}`}
-                      height={183}
-                      width={183}
-                    />
-                  </Box>
-                  <Flex direction="column" align="start">
-                    <Text
-                      className={clsx(
-                        playfairDisplay.className,
-                        classes["product_name"]
-                      )}
-                    >
-                      {p.name}
-                    </Text>
-                    <Text
-                      className={clsx(
-                        sfProRegular.className,
-                        classes["product_price"]
-                      )}
-                    >{`${p.currency} ${p.price}`}</Text>
-                  </Flex>
-                </Box>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {productsQuery.status === "success" ? (
+            <Swiper
+              className={classes.heroSlider}
+              modules={[Navigation]}
+              spaceBetween={75}
+              slidesPerView={5}
+              navigation
+            >
+              {productsQuery.data?.products &&
+                productsQuery.data.products.map((p, index) => (
+                  <SwiperSlide key={`${index}-${p.name}`}>
+                    <Box>
+                      <Box>
+                        <Image
+                          src={
+                            index === 0
+                              ? "/images/product_1.png"
+                              : "/images/product_2.png"
+                          }
+                          alt={`Product ${index + 1}`}
+                          height={183}
+                          width={183}
+                        />
+                      </Box>
+                      <Flex direction="column" align="start">
+                        <Text
+                          className={clsx(
+                            playfairDisplay.className,
+                            classes["product_name"]
+                          )}
+                        >
+                          {p.name}
+                        </Text>
+                        <Text
+                          className={clsx(
+                            sfProRegular.className,
+                            classes["product_price"]
+                          )}
+                        >{`${p.currency} ${p.price}`}</Text>
+                      </Flex>
+                    </Box>
+                  </SwiperSlide>
+                ))}
+            </Swiper>
+          ) : (
+            <Skeleton count={10} />
+          )}
           <Flex style={{ marginTop: "32px" }} align="center" justify="center">
             <Button variant="outline">Lihat lebih banyak</Button>
           </Flex>

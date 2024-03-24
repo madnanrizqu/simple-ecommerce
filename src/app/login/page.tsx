@@ -2,7 +2,7 @@
 
 import { Button, Input } from "@/ui_kit";
 import { Box, Flex, Heading, Text } from "@radix-ui/themes";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm, Controller } from "react-hook-form";
 import classes from "./login.module.css";
@@ -20,8 +20,8 @@ const Login = () => {
     password: string;
   }>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "vascomm@gmail.com",
+      password: "rahasia",
     },
   });
 
@@ -30,6 +30,17 @@ const Login = () => {
   const router = useRouter();
 
   const authStore = useAuthStore();
+
+  useEffect(() => {
+    toast(
+      "Selamat datang tim Vascomm! Silahkan gunakan akun yg sudah terisi di input untuk mencoba fitur admin",
+      { position: "top-center" }
+    );
+    toast(
+      "Untuk fitur customer silahkan registrasi. Bisa sekaligus dilihat flow registration nya",
+      { position: "top-center" }
+    );
+  }, []);
 
   return (
     <PageLoader isLoading={loading !== "none"}>
@@ -88,6 +99,7 @@ const Login = () => {
                     render={({ field }) => (
                       <Input
                         className={classes.input}
+                        type="password"
                         placeholder="Masukkan password"
                         {...field}
                       ></Input>
