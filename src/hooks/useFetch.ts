@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useFetch = <T>(
   fetcher: () => Promise<T>,
+  deps?: unknown[],
   initialValue: T | null = null
 ) => {
   const [data, setData] = useState(initialValue);
@@ -10,11 +11,13 @@ export const useFetch = <T>(
   >("idle");
   const [error, setError] = useState<unknown | null>(null);
 
+  const _fetcher = useCallback(fetcher, deps ?? []);
+
   useEffect(() => {
     (async () => {
       try {
         setStatus("loading");
-        const res = await fetcher();
+        const res = await _fetcher();
         setData(res);
         setStatus("success");
       } catch (err) {
@@ -22,6 +25,6 @@ export const useFetch = <T>(
         setError(error);
       }
     })();
-  }, [fetcher, error]);
+  }, [_fetcher, error]);
   return { status, data, error };
 };

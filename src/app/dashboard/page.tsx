@@ -13,7 +13,7 @@ import {
   TableRow,
   Text,
 } from "@radix-ui/themes";
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 import classes from "./page.module.css";
 import DashboardCard from "./components/DashboardCard";
@@ -21,11 +21,19 @@ import { Pagination } from "./components/Pagination";
 import { useFetch } from "@/hooks/useFetch";
 import { getTotalUsers } from "@/api/user";
 import Skeleton from "react-loading-skeleton";
-import { getTotalProducts } from "@/api/products";
+import { getProducts, getTotalProducts } from "@/api/products";
+import { pagination } from "@/utils/pagination";
 
 const Dashboard = () => {
   const usersQuery = useFetch(getTotalUsers);
   const productsQuery = useFetch(getTotalProducts);
+
+  const [page, setPage] = useState(1);
+  const take = 5;
+  const tableQuery = useFetch(
+    () => getProducts({ take, skip: pagination.calcSkip({ take, page }) }),
+    [page]
+  );
 
   return (
     <Box className={classes.root}>
@@ -58,37 +66,44 @@ const Dashboard = () => {
       )}
       <Flex direction="column" gap="2" className={classes.newProduct}>
         <Text className={classes.newProductTitle}>Produk Terbaru</Text>
-        <TableRoot>
-          <TableHeader>
-            <TableRow className={classes.tableHeaderRow}>
-              <TableColumnHeaderCell>Produk</TableColumnHeaderCell>
-              <TableColumnHeaderCell>Tanggal Dibuat</TableColumnHeaderCell>
-              <TableColumnHeaderCell>Harga (Rp)</TableColumnHeaderCell>
-            </TableRow>
-          </TableHeader>
+        {tableQuery.status === "success" ? (
+          <TableRoot>
+            <TableHeader>
+              <TableRow className={classes.tableHeaderRow}>
+                <TableColumnHeaderCell>Produk</TableColumnHeaderCell>
+                <TableColumnHeaderCell>Tanggal Dibuat</TableColumnHeaderCell>
+                <TableColumnHeaderCell>Harga (Rp)</TableColumnHeaderCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            <TableRow>
-              <TableCell>Microsoft Surface 7</TableCell>
-              <TableCell>12 Mei 2023</TableCell>
-              <TableCell>Rp. 1000</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Microsoft Surface 7</TableCell>
-              <TableCell>12 Mei 2023</TableCell>
-              <TableCell>Rp. 1000</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Microsoft Surface 7</TableCell>
-              <TableCell>12 Mei 2023</TableCell>
-              <TableCell>Rp. 1000</TableCell>
-            </TableRow>
-          </TableBody>
-        </TableRoot>
+            <TableBody>
+              {tableQuery.data?.products &&
+                tableQuery.data.products.map((v) => (
+                  <>
+                    <TableRow key={v.id}>
+                      <TableCell>{v.name}</TableCell>
+                      <TableCell>
+                        {new Date(v.created_at).toDateString()}
+                      </TableCell>
+                      <TableCell>{v.price}</TableCell>
+                    </TableRow>
+                  </>
+                ))}
+            </TableBody>
+          </TableRoot>
+        ) : (
+          <Skeleton count={7} />
+        )}
       </Flex>
       <Pagination
-        page={1}
+        page={page}
         style={{ marginTop: "16px", justifyContent: "end" }}
+        onClickNext={(newPage) => setPage(newPage)}
+        onClickPrev={(newPage) => setPage(newPage)}
+        maxPage={pagination.calcMaxPage({
+          take,
+          total: tableQuery.data?.total,
+        })}
       />
     </Box>
   );

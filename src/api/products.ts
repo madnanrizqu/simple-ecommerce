@@ -1,10 +1,21 @@
 import { fetcher } from "@/lib/fetcher";
 import { Product } from "@/type/product";
 
-export const getProducts = async () => {
+type Pagination = {
+  skip?: number;
+  take?: number;
+};
+
+export const getProducts = async (args?: Pagination) => {
+  const searchParams = args
+    ? new URLSearchParams(args as Record<string, string>)
+    : "";
+
   return await fetcher
-    .get<ApiResponse<{ products: Array<Product> }>>("/products")
-    .then((res) => res.data.data?.products);
+    .get<ApiResponse<{ products: Array<Product>; total: number }>>(
+      `/products?${searchParams}`
+    )
+    .then((res) => res.data.data);
 };
 
 export const getTotalProducts = async () => {
