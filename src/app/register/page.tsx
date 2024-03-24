@@ -25,10 +25,10 @@ const Register = () => {
     Pick<User, "email" | "name" | "password" | "contactNumber">
   >({
     defaultValues: {
-      name: "test3",
-      email: "test3@gmail.com",
-      contactNumber: "8612412315",
-      password: "test12",
+      name: "",
+      email: "",
+      contactNumber: "",
+      password: "",
     },
   });
   const [loading, setLoading] = useState(false);
@@ -167,7 +167,7 @@ const Register = () => {
 
         <DialogRoot open={dialog === "verifyEmail"}>
           <DialogContent>
-            <DialogTitle>Berhasil! Silahkan valdiasi email</DialogTitle>
+            <DialogTitle>Berhasil! Silahkan validasi email</DialogTitle>
             <Text>Go and visit this url: </Text>
             <a href={verifyEmailLink as string}>{verifyEmailLink}</a>
           </DialogContent>
