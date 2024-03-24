@@ -8,3 +8,11 @@ export const getCurrentUser = async () => {
     })
     .then((res) => res.data.data);
 };
+
+export const getTotalUsers = async () => {
+  return await fetcher
+    .get<ApiResponse<{ deleted: number; notDeleted: number; total: number }>>(
+      "/users/total"
+    )
+    .then((res) => res.data.data);
+};

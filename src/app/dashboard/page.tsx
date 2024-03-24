@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Box,
   Flex,
@@ -16,26 +18,44 @@ import React from "react";
 import classes from "./page.module.css";
 import DashboardCard from "./components/DashboardCard";
 import { Pagination } from "./components/Pagination";
+import { useFetch } from "@/hooks/useFetch";
+import { getTotalUsers } from "@/api/user";
+import Skeleton from "react-loading-skeleton";
+import { getTotalProducts } from "@/api/products";
 
 const Dashboard = () => {
+  const usersQuery = useFetch(getTotalUsers);
+  const productsQuery = useFetch(getTotalProducts);
+
   return (
     <Box className={classes.root}>
       <Heading>Dashboard</Heading>
-      <Flex gap="4" className={classes.cards}>
-        <DashboardCard title="Jumlah User" value="150" valueLabel="User" />
-        <DashboardCard
-          title="Jumlah User Aktif"
-          value="150"
-          valueLabel="User"
-        />
-        <DashboardCard title="Jumlah Produk" value="150" valueLabel="User" />
-        <DashboardCard
-          title="Jumlah Produk Aktif"
-          value="150"
-          valueLabel="User"
-        />
-      </Flex>
-
+      {usersQuery.status === "success" && productsQuery.status === "success" ? (
+        <Flex gap="4" className={classes.cards}>
+          <DashboardCard
+            title="Jumlah User"
+            value={String(usersQuery.data?.total as number)}
+            valueLabel="User"
+          />
+          <DashboardCard
+            title="Jumlah User Aktif"
+            value={String(usersQuery.data?.notDeleted as number)}
+            valueLabel="User"
+          />
+          <DashboardCard
+            title="Jumlah Produk"
+            value={String(productsQuery.data?.total as number)}
+            valueLabel="User"
+          />
+          <DashboardCard
+            title="Jumlah Produk Aktif"
+            value={String(productsQuery.data?.notDeleted as number)}
+            valueLabel="User"
+          />
+        </Flex>
+      ) : (
+        <Skeleton count={5} />
+      )}
       <Flex direction="column" gap="2" className={classes.newProduct}>
         <Text className={classes.newProductTitle}>Produk Terbaru</Text>
         <TableRoot>
@@ -66,7 +86,6 @@ const Dashboard = () => {
           </TableBody>
         </TableRoot>
       </Flex>
-
       <Pagination
         page={1}
         style={{ marginTop: "16px", justifyContent: "end" }}
