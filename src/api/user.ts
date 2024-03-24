@@ -40,3 +40,7 @@ export const updateUser = async (userId: number, data: Partial<User>) => {
     .put<ApiResponse<UserAsResponse>>(`/users/${userId}`, data)
     .then((res) => res.data.data);
 };
+
+export const deleteUser = async (userId: number) => {
+  return await fetcher.delete<ApiResponse<UserAsResponse>>(`/users/${userId}`);
+};

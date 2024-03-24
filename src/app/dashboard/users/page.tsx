@@ -26,7 +26,7 @@ import DashboardChip from "../components/DashboardChip";
 import { Pagination } from "../components/Pagination";
 import { UserForm } from "../components/UserForm";
 import { useFetch } from "@/hooks/useFetch";
-import { createUser, getUsers, updateUser } from "@/api/user";
+import { createUser, deleteUser, getUsers, updateUser } from "@/api/user";
 import { pagination } from "@/utils/pagination";
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
@@ -79,7 +79,9 @@ const Users = () => {
   );
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
-  const [loading, setLoading] = useState<"create" | "update" | "none">("none");
+  const [loading, setLoading] = useState<
+    "create" | "update" | "delete" | "none"
+  >("none");
 
   const [page, setPage] = useState(1);
   const take = 5;
@@ -306,7 +308,10 @@ const Users = () => {
               <Text
                 style={{ color: "#A4A4A4" }}
               >{`Apakah kamu yakin menghapus ${
-                userData.find((v) => v.id === selectedUserId)?.name
+                (tableQuery.data?.users &&
+                  tableQuery.data.users.find((v) => v.id === selectedUserId)
+                    ?.name) ??
+                "user"
               }?`}</Text>
             </Flex>
             <Inset side="x" mt="2">
@@ -323,7 +328,27 @@ const Users = () => {
                 <Button variant="outline" onClick={() => setDialog("none")}>
                   Batal
                 </Button>
-                <Button>Hapus</Button>
+                <Button
+                  onClick={async () => {
+                    try {
+                      setLoading("delete");
+                      await deleteUser(selectedUserId as number);
+
+                      setLoading("none");
+                      setDialog("none");
+                      toast(
+                        `Berhasil menghapus user dengan id: ${selectedUserId}`
+                      );
+                      tableQuery.refetch();
+                    } catch (error) {
+                      setLoading("none");
+                      setDialog("none");
+                      toast("Terjadi kesalahan");
+                    }
+                  }}
+                >
+                  Hapus
+                </Button>
               </Flex>
             </Inset>
           </DialogContent>
