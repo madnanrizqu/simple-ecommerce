@@ -3,15 +3,16 @@ import { Flex } from "@radix-ui/themes";
 import React from "react";
 import classes from "./UserForm.module.css";
 import { useForm, Controller } from "react-hook-form";
+import { User } from "@/type/user";
 
-type User = { name: string; email: string; contactNumber: string };
+type FormUser = Omit<User, "contactNumberExtension">;
 type UserForm = {
-  initialData?: User;
-  onSubmit?: (v: User) => void;
+  initialData?: Omit<FormUser, "password">;
+  onSubmit?: (v: FormUser) => void;
 };
 
 export const UserForm = (props: UserForm) => {
-  const { control, handleSubmit } = useForm<User>({
+  const { control, handleSubmit } = useForm<FormUser>({
     defaultValues: {
       name: props.initialData?.name ?? "",
       email: props.initialData?.email ?? "",
@@ -59,6 +60,38 @@ export const UserForm = (props: UserForm) => {
         </Flex>
 
         <Flex direction="column" gap="2">
+          <label className={classes.label}>Password</label>
+          <Controller
+            name="password"
+            control={control}
+            rules={{ required: true, minLength: 6 }}
+            render={({ field }) => (
+              <Input
+                className={classes.input}
+                placeholder="Masukkan password"
+                {...field}
+              ></Input>
+            )}
+          ></Controller>
+        </Flex>
+
+        <Flex direction="column" gap="2">
+          <label className={classes.label}>Role</label>
+          <Controller
+            name="role"
+            control={control}
+            rules={{ required: true, pattern: /ADMIN|CUSTOMER/ }}
+            render={({ field }) => (
+              <Input
+                className={classes.input}
+                placeholder="Masukkan jenis user (ADMIN | CUSTOMER)"
+                {...field}
+              ></Input>
+            )}
+          ></Controller>
+        </Flex>
+
+        <Flex direction="column" gap="2">
           <label className={classes.label}>No Kontak</label>
           <Controller
             name="contactNumber"
@@ -67,7 +100,7 @@ export const UserForm = (props: UserForm) => {
             render={({ field }) => (
               <Input
                 className={classes.input}
-                placeholder="Contoh: 0886124123"
+                placeholder="Contoh: 886124123"
                 type="number"
                 {...field}
               ></Input>

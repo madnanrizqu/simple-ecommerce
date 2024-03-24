@@ -1,5 +1,11 @@
 .root {
-  position: relative;
+  --root-zindex: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--root-zindex);
 }
 
 .backdrop {
@@ -9,7 +15,7 @@
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 1000000000;
+  z-index: calc(var(--root-zindex) + 1);
 }
 
 .loader {
@@ -17,5 +23,5 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000000001;
+  z-index: calc(var(--root-zindex) + 2);
 }

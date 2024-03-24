@@ -28,3 +28,9 @@ export const getUsers = async (args?: Pagination) => {
     )
     .then((res) => res.data.data);
 };
+
+export const createUser = async (data: User) => {
+  return await fetcher
+    .post<ApiResponse<UserAsResponse>>("/users", data)
+    .then((res) => res.data.data);
+};
