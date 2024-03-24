@@ -229,6 +229,8 @@ const Users = () => {
                     setLoading("none");
                     setDialog("none");
                     toast(`Berhasil membuat user ${user?.name ?? ""}`);
+
+                    await tableQuery.refetch();
                   } catch (error) {
                     setLoading("none");
                     if (isAxiosError(error)) {
