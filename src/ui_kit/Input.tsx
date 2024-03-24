@@ -24,6 +24,7 @@ export const Input = forwardRef(
           style={props.style}
           placeholder={props.placeholder}
           onChange={props.onChange}
+          type={props.type}
         />
         {props.rightIcon && (
           <TextFieldSlot style={props.style}>{props.rightIcon}</TextFieldSlot>

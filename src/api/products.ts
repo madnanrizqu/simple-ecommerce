@@ -1,5 +1,5 @@
 import { fetcher } from "@/lib/fetcher";
-import { Product } from "@/type/product";
+import { Product, ProductAsPayload, ProductAsResponse } from "@/type/product";
 
 export const getProducts = async (args?: Pagination) => {
   const searchParams = args
@@ -18,5 +18,11 @@ export const getTotalProducts = async () => {
     .get<ApiResponse<{ deleted: number; notDeleted: number; total: number }>>(
       "/products/total"
     )
+    .then((res) => res.data.data);
+};
+
+export const createProduct = async (data: ProductAsPayload) => {
+  return await fetcher
+    .post<ApiResponse<ProductAsResponse>>("/products", data)
     .then((res) => res.data.data);
 };

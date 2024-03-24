@@ -83,7 +83,13 @@ export const ProductForm = (props: ProductForm) => {
             textTransform: "uppercase",
             padding: "20px",
           }}
-          onClick={props.onSubmit ? handleSubmit(props.onSubmit) : undefined}
+          onClick={
+            props.onSubmit
+              ? handleSubmit((v) =>
+                  props.onSubmit?.({ ...v, price: Number(v.price) })
+                )
+              : undefined
+          }
         >
           Simpan
         </Button>
