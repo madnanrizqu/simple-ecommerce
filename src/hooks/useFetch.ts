@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 export const useFetch = <T>(
   fetcher: () => Promise<T>,
   deps?: unknown[],
-  initialValue: T | null = null
+  initialValue: T | null = null,
+  disable?: boolean
 ) => {
   const [data, setData] = useState(initialValue);
   const [status, setStatus] = useState<
@@ -14,6 +15,10 @@ export const useFetch = <T>(
   const _fetcher = useCallback(fetcher, deps ?? []);
 
   const callApi = async () => {
+    if (disable) {
+      return;
+    }
+
     try {
       setStatus("loading");
       const res = await _fetcher();

@@ -21,49 +21,74 @@ import { Pagination } from "./components/Pagination";
 import { useFetch } from "@/hooks/useFetch";
 import { getTotalUsers } from "@/api/user";
 import Skeleton from "react-loading-skeleton";
-import { getProducts, getTotalProducts } from "@/api/products";
+import {
+  getProducts,
+  getPublicProducts,
+  getTotalProducts,
+} from "@/api/products";
 import { pagination } from "@/utils/pagination";
+import { useAuthStore } from "@/store/auth";
 
 const Dashboard = () => {
-  const usersQuery = useFetch(getTotalUsers);
-  const productsQuery = useFetch(getTotalProducts);
+  const authStore = useAuthStore();
+  const usersQuery = useFetch(
+    getTotalUsers,
+    [],
+    null,
+    authStore.user?.role !== "ADMIN"
+  );
+  const productsQuery = useFetch(
+    getTotalProducts,
+    [],
+    null,
+    authStore.user?.role !== "ADMIN"
+  );
 
   const [page, setPage] = useState(1);
   const take = 5;
   const tableQuery = useFetch(
-    () => getProducts({ take, skip: pagination.calcSkip({ take, page }) }),
+    () =>
+      authStore.user?.role === "ADMIN"
+        ? getProducts({ take, skip: pagination.calcSkip({ take, page }) })
+        : getPublicProducts({
+            take,
+            skip: pagination.calcSkip({ take, page }),
+          }),
     [page]
   );
 
   return (
     <Box className={classes.root}>
       <Heading>Dashboard</Heading>
-      {usersQuery.status === "success" && productsQuery.status === "success" ? (
-        <Flex gap="4" className={classes.cards}>
-          <DashboardCard
-            title="Jumlah User"
-            value={String(usersQuery.data?.total as number)}
-            valueLabel="User"
-          />
-          <DashboardCard
-            title="Jumlah User Aktif"
-            value={String(usersQuery.data?.notDeleted as number)}
-            valueLabel="User"
-          />
-          <DashboardCard
-            title="Jumlah Produk"
-            value={String(productsQuery.data?.total as number)}
-            valueLabel="User"
-          />
-          <DashboardCard
-            title="Jumlah Produk Aktif"
-            value={String(productsQuery.data?.notDeleted as number)}
-            valueLabel="User"
-          />
-        </Flex>
-      ) : (
-        <Skeleton count={5} />
-      )}
+      {authStore.user?.role === "ADMIN" ? (
+        usersQuery.status === "success" &&
+        productsQuery.status === "success" ? (
+          <Flex gap="4" className={classes.cards}>
+            <DashboardCard
+              title="Jumlah User"
+              value={String(usersQuery.data?.total as number)}
+              valueLabel="User"
+            />
+            <DashboardCard
+              title="Jumlah User Aktif"
+              value={String(usersQuery.data?.notDeleted as number)}
+              valueLabel="User"
+            />
+            <DashboardCard
+              title="Jumlah Produk"
+              value={String(productsQuery.data?.total as number)}
+              valueLabel="User"
+            />
+            <DashboardCard
+              title="Jumlah Produk Aktif"
+              value={String(productsQuery.data?.notDeleted as number)}
+              valueLabel="User"
+            />
+          </Flex>
+        ) : (
+          <Skeleton count={5} />
+        )
+      ) : null}
       <Flex direction="column" gap="2" className={classes.newProduct}>
         <Text className={classes.newProductTitle}>Produk Terbaru</Text>
         {tableQuery.status === "success" ? (

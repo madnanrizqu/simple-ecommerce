@@ -1,6 +1,18 @@
 import { fetcher } from "@/lib/fetcher";
 import { Product, ProductAsPayload, ProductAsResponse } from "@/type/product";
 
+export const getPublicProducts = async (args?: Pagination) => {
+  const searchParams = args
+    ? new URLSearchParams(args as Record<string, string>)
+    : "";
+
+  return await fetcher
+    .get<ApiResponse<{ products: Array<Product>; total: number }>>(
+      `/products/public?${searchParams}`
+    )
+    .then((res) => res.data.data);
+};
+
 export const getProducts = async (args?: Pagination) => {
   const searchParams = args
     ? new URLSearchParams(args as Record<string, string>)

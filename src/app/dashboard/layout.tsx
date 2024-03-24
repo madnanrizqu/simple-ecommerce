@@ -117,36 +117,40 @@ export default function DashboardLayout({
                   </Flex>
                 </Link>
               </li>
-              <li>
-                <Link href="/dashboard/users">
-                  <Flex
-                    align="center"
-                    gap="2"
-                    className={clsx(classes.sidebarItem, {
-                      [classes.sidebarItemActive]:
-                        pathname === "/dashboard/users",
-                    })}
-                  >
-                    <UserIcon />
-                    <Text size="2">Manajemen User</Text>
-                  </Flex>
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard/products">
-                  <Flex
-                    align="center"
-                    gap="2"
-                    className={clsx(classes.sidebarItem, {
-                      [classes.sidebarItemActive]:
-                        pathname === "/dashboard/products",
-                    })}
-                  >
-                    <ProductIcon />
-                    <Text size="2">Manajemen Pesanan</Text>
-                  </Flex>
-                </Link>
-              </li>
+              {authStore.user?.role === "ADMIN" && (
+                <>
+                  <li>
+                    <Link href="/dashboard/users">
+                      <Flex
+                        align="center"
+                        gap="2"
+                        className={clsx(classes.sidebarItem, {
+                          [classes.sidebarItemActive]:
+                            pathname === "/dashboard/users",
+                        })}
+                      >
+                        <UserIcon />
+                        <Text size="2">Manajemen User</Text>
+                      </Flex>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard/products">
+                      <Flex
+                        align="center"
+                        gap="2"
+                        className={clsx(classes.sidebarItem, {
+                          [classes.sidebarItemActive]:
+                            pathname === "/dashboard/products",
+                        })}
+                      >
+                        <ProductIcon />
+                        <Text size="2">Manajemen Pesanan</Text>
+                      </Flex>
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </aside>
