@@ -26,3 +26,12 @@ export const createProduct = async (data: ProductAsPayload) => {
     .post<ApiResponse<ProductAsResponse>>("/products", data)
     .then((res) => res.data.data);
 };
+
+export const updateProduct = async (
+  productId: number,
+  data: Partial<ProductAsPayload>
+) => {
+  return await fetcher
+    .put<ApiResponse<ProductAsResponse>>(`/products/${productId}`, data)
+    .then((res) => res.data.data);
+};

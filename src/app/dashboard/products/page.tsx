@@ -29,11 +29,18 @@ import DashboardChip from "../components/DashboardChip";
 import { ProductForm } from "../components/ProductForm";
 import { Pagination } from "../components/Pagination";
 import { useFetch } from "@/hooks/useFetch";
-import { createProduct, getProducts, getTotalProducts } from "@/api/products";
+import {
+  createProduct,
+  getProducts,
+  getTotalProducts,
+  updateProduct,
+} from "@/api/products";
 import { pagination } from "@/utils/pagination";
 import Skeleton from "react-loading-skeleton";
 import { PageLoader } from "@/ui_kit/PageLoader";
 import { toast } from "react-toastify";
+import { Product } from "@/type/product";
+import dayjs from "dayjs";
 
 const productData = [
   {
@@ -199,11 +206,27 @@ const Users = () => {
             </DialogTitle>
 
             <ProductForm
-              initialData={
-                dialog === "update" && selectedProductId
-                  ? productData.find((v) => v.id === selectedProductId)
-                  : undefined
-              }
+              initialData={(() => {
+                if (
+                  dialog === "update" &&
+                  selectedProductId &&
+                  tableQuery.data?.products
+                ) {
+                  const product = tableQuery.data.products.find(
+                    (v) => v.id === selectedProductId
+                  ) as Product;
+
+                  return {
+                    name: product.name,
+                    price: product.price,
+                    createdAt: dayjs(new Date(product.created_at)).format(
+                      "DD/MM/YYYY"
+                    ),
+                  };
+                } else {
+                  return undefined;
+                }
+              })()}
               onSubmit={async (v) => {
                 if (dialog === "create") {
                   try {
@@ -225,6 +248,24 @@ const Users = () => {
                     toast("Terjadi kesahalan");
                   }
                 } else if (dialog === "update") {
+                  try {
+                    setLoading("update");
+                    const product = await updateProduct(
+                      selectedProductId as number,
+                      v
+                    );
+
+                    setLoading("none");
+                    setDialog("none");
+
+                    toast(`Berhasil mengubah produk ${product?.name}`);
+
+                    tableQuery.refetch();
+                  } catch (error) {
+                    setLoading("none");
+
+                    toast("Terjadi kesahalan");
+                  }
                 }
               }}
             />
