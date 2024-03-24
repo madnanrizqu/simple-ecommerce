@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 
 interface State {
   user: LoggedInUser | null;
-  token: string | null;
+  token: string | null; // not used for auth purposes since we use cookies for auth. this is just for reference
   setToken: (token: string) => void;
   setUser: (user: LoggedInUser) => void;
 }
