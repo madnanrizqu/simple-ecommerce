@@ -13,7 +13,7 @@ import classes from "./page.module.css";
 import clsx from "clsx";
 import { playfairDisplay, sfProRegular } from "@/styles/font";
 import { useEffect, useState } from "react";
-import { getProducts } from "@/api/products";
+import { getProducts, getPublicProducts } from "@/api/products";
 import { Product } from "@/type/product";
 import Link from "next/link";
 
@@ -78,8 +78,8 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      getProducts().then((data) => {
-        setProducts(data ?? []);
+      getPublicProducts().then((data) => {
+        setProducts(data?.products ?? []);
       });
     } catch (error) {}
   }, []);
